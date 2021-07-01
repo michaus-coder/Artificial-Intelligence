@@ -3,6 +3,7 @@
 #include<time.h>
 #include<string>
 #include<conio.h>
+#include<fstream>
 using namespace std;
 
 class Siswa {
@@ -36,7 +37,7 @@ public:
 		prestasi = _prestasi;
 		keaktifan = _keaktifan;
 	}
-	void setNumber(int _number){
+	void setNumber(int _number) {
 		number = _number;
 	}
 	void setNama(string _nama) {
@@ -51,13 +52,13 @@ public:
 	void setPenghasilan(int _penghasilan) {
 		penghasilan = _penghasilan;
 	}
-	void setUmur(int _umur){
+	void setUmur(int _umur) {
 		umur = _umur;
 	}
 	void setTanggungan(int _tanggungan) {
 		tanggungan = _tanggungan;
 	}
-	void setKeaktifan(int _keaktifan){
+	void setKeaktifan(int _keaktifan) {
 		keaktifan = _keaktifan;
 	}
 	void setNilai(int _nilai) {
@@ -66,7 +67,7 @@ public:
 	string getNama() {
 		return nama;
 	}
-	int getNumber(){
+	int getNumber() {
 		return number;
 	}
 	int getBerat() {
@@ -75,22 +76,22 @@ public:
 	int getValue() {
 		return value;
 	}
-	int getPenghasilan(){
+	int getPenghasilan() {
 		return penghasilan;
 	}
-	int getUmur(){
+	int getUmur() {
 		return umur;
 	}
-	int getTanggungan(){
+	int getTanggungan() {
 		return tanggungan;
 	}
-	int getNilai(){
+	int getNilai() {
 		return nilai;
 	}
-	int getPrestasi(){
+	int getPrestasi() {
 		return prestasi;
 	}
-	int getKeaktifan(){
+	int getKeaktifan() {
 		return keaktifan;
 	}
 };
@@ -98,12 +99,14 @@ public:
 class listSiswa {
 	Siswa* list;
 	int count;
-	int budget;
+	int budget, min, max;
 public:
 	listSiswa() {
 		count = 0;
 		list = new Siswa[count];
-		budget = 10000000;
+		budget = 100000000;
+		min = 2000000;
+		max = 10000000;
 	}
 	void addSiswa(Siswa input) {
 		Siswa* temp = new Siswa[count + 1];
@@ -114,7 +117,6 @@ public:
 		delete[]list;
 		list = temp;
 		count++;
-		cout << "Siswa added";
 	}
 	void editSiswa(int index, Siswa edit) {
 		if (index > 0 && index < count)
@@ -122,7 +124,6 @@ public:
 			list[index].setNama(edit.getNama());
 			list[index].setBerat(edit.getBerat());
 			list[index].setValue(edit.getValue());
-			cout << "Siswa edited";
 		}
 		else {
 			cout << "Index out of range";
@@ -130,28 +131,35 @@ public:
 	}
 	void deleteSiswa(int index) {
 		Siswa* temp = new Siswa[count - 1];
+		int co = 0;
 		for (int i = 0; i < count; i++) {
 			if (i != index)
 			{
-				temp[i] = list[i];
+				temp[co] = list[i];
+				co++;
 			}
 		}
 		delete[]list;
 		list = temp;
 		count--;
-		cout << "Siswa deleted";
 	}
 	void showSiswa() {
 		for (int i = 0; i < count; i++)
 		{
-			cout << "Index : " << i << endl;
-			cout << "Nama : " << list[i].getNama() << endl;
+			cout << "Index		: " << i << endl;
+			cout << "Nama		: " << list[i].getNama() << endl;
+			cout << "Beasiswa	: " << list[i].getBerat() << endl;
+			cout << "Value		: " << list[i].getValue() << endl;
 			cout << endl;
 		}
 	}
 
 	Siswa getSiswaByIndex(int index) {
 		return list[index];
+	}
+
+	int getCount() {
+		return count;
 	}
 
 	int getWeightByIndex(int index) {
@@ -162,25 +170,27 @@ public:
 		budget = _budget;
 	}
 
+	void setMin(int _min) {
+		min = _min;
+	}
+
+	void setMax(int _max) {
+		max = _max;
+	}
+
+	int getMin() {
+		return min;
+	}
+
+	int getMax() {
+		return max;
+	}
+
 	int getBudget() {
 		return budget;
 	}
 };
 
-//void InitItem(listsiswa a[]) {
-//	a[0].setAll(1, "Bug Repellent", 2, 12);
-//	a[1].setAll(2, "Tent", 11, 20);
-//	a[2].setAll(3, "Stove", 4, 5);
-//	a[3].setAll(4, "Clothes", 5, 11);
-//	a[4].setAll(5, "Dried Foods", 3, 50);
-//	a[5].setAll(6, "First Aid Kit", 3, 15);
-//	a[6].setAll(7, "Flash Light", 2, 6);
-//	a[7].setAll(8, "Novel", 2, 4);
-//	a[8].setAll(9, "Rain Gear", 2, 5);
-//	a[9].setAll(10, "Sleeping Bag", 3, 25);
-//	a[10].setAll(11, "Water Filter", 1, 30);
-//	a[11].setAll(12, "Lantern", 7, 10);
-//}
 
 class individual {
 	int count;
@@ -211,45 +221,86 @@ public:
 	Siswa getItem(int index) {
 		return item[index];
 	}
+	void addGen(Siswa input) {
+		Siswa* tmp = new Siswa[count + 1];
+		for (int i = 0; i < count; i++) {
+			tmp[i] = item[i];
+		}
+		tmp[count] = input;
+		delete[]item;
+		item = tmp;
+		count++;
+	}
+	//void popGen(){
+	//	Siswa* tmp = new Siswa[count - 1];
+	//	for(int i = 0; i < count; i++){
+	//		if(i != (count - 1)){
+	//			tmp[i] = item[i];
+	//		}
+	//	}
+	//	delete[]item;
+	//	item = tmp;
+	//	count--;
+	//}
 	void InitIndividual(listSiswa a, int budget) {
 		int tmpweight = 0;
 		int tmpcount = 0;
 		int arr[100];
 		bool check;
 		int random;
-		while (tmpweight < budget) {
-			do {
-				random = rand() % count;
+		int tmp = a.getCount();
+		int check_count = 0;
+		listSiswa copy;
+		for (int i = 0; i < a.getCount(); i++) {
+			copy.addSiswa(a.getSiswaByIndex(i));
+		}
+		while (tmpweight < budget && tmp > tmpcount) {
+			random = rand() % copy.getCount();
+			check_count++;
+			if ((tmpweight + copy.getWeightByIndex(random)) >= budget && check_count < copy.getCount()) {
+				continue;
+			}
+			else if ((tmpweight + copy.getWeightByIndex(random)) >= budget && check_count >= copy.getCount()) {
+				break;
+			}
+			addGen(copy.getSiswaByIndex(random));
+			tmpweight = tmpweight + copy.getWeightByIndex(random);
+			copy.deleteSiswa(random);
+			tmpcount++;
+			/*do {
+				random = rand() % a.getCount();
 				check = true;
-				for (int i = 0; i < tmpcount; i++)
-				{
-					if (random == arr[i]) {
-						check = false;
-						break;
+				if (tmpcount != 0) {
+					for (int i = 0; i < tmpcount; i++)
+					{
+						if (random == arr[i]) {
+							check = false;
+							break;
+						}
 					}
 				}
-			} while (!check);
-			arr[tmpcount] = random;
-			tmpcount++;
-			tmpweight = tmpweight + a.getWeightByIndex(random);
+				else {
+					break;
+				}
+			} while (check);
+			if ((tmpweight +  a.getWeightByIndex(random)) >= budget) {
+				break;
+			}
+			else {
+				arr[tmpcount] = random;
+				tmpcount++;
+				tmpweight = tmpweight + a.getWeightByIndex(random);
+			}*/
+
 		}
-		item = new Siswa[tmpcount];
+		/*item = new Siswa[tmpcount];
 		for (int i = 0; i < tmpcount; i++)
 		{
 			item[i] = a.getSiswaByIndex(arr[i]);
-		}
+		}*/
 		count = tmpcount;
 		totalberat = tmpweight;
-		if (totalberat > 20) {
-			int fit = getFitnessIndividual();
-			int co = totalberat - 20;
-			int mult = co * 5;
-			fit -= mult;
-			totalvalue = fit;
-		}
-		else {
-			totalvalue = getFitnessIndividual();
-		}
+		totalvalue = getFitnessIndividual();
 	}
 	int getFitnessIndividual() {
 		for (int i = 0; i < count; i++)
@@ -277,7 +328,7 @@ public:
 	bool checkisi(int a) {
 		for (int i = 0; i < count; i++)
 		{
-			if (a == i) {
+			if (a == item[i].getNumber()) {
 				return true;
 			}
 		}
@@ -292,6 +343,7 @@ public:
 	void showList() {
 		for (int i = 0; i < count; i++)
 		{
+			cout << "====================================================================" << endl;
 			cout << "Index               : " << item[i].getNumber() << endl;
 			cout << "Name                : " << item[i].getNama() << endl;
 			cout << "Monthly Income      : " << item[i].getPenghasilan() << endl;
@@ -299,9 +351,11 @@ public:
 			cout << "Monthly Outcome     : " << item[i].getTanggungan() << endl;
 			cout << "Average Score       : " << item[i].getNilai() << endl;
 			cout << "Achievement         : " << item[i].getPrestasi() << endl;
-			cout << "Contribution        : " << item[i].getTanggungan() << endl;
-			int beasiswa = item[i].getBerat() * 1000; //dipaskan perhitungannya
+			cout << "Contribution        : " << item[i].getKeaktifan() << endl;
+			int beasiswa = item[i].getBerat(); //dipaskan perhitungannya
 			cout << "Beasiswa            : " << beasiswa << endl;
+			cout << "====================================================================" << endl;
+			cout << endl;
 		}
 	}
 };
@@ -436,7 +490,7 @@ void mutate(individual& child, listSiswa n) {
 	bool check = true;
 	while (check)
 	{
-		int rand_item = rand() % 12;
+		int rand_item = rand() % child.getCountIndividual();
 		if (!child.checkisi(rand_item))
 		{
 			check = false;
@@ -460,14 +514,42 @@ void bubble_sort(population item) {
 	cout << endl;
 }
 
-float countWeight(int penghasilan, int tanggungan, int umur){
-	float weight;
-	if(penghasilan < tanggungan){
-		weight = 10 * umur;
+float countWeight(int penghasilan, int tanggungan, int umur, int min, int max) {
+	float tempweight = penghasilan - tanggungan;
+	float weight = 0;
+	if (tempweight >= 7500000) {
+		weight = min;
 	}
-	else{
-		weight = 5 * umur;
+	else if (tempweight >= 5000000 && tempweight < 7500000) {
+		weight = 0.25 * max;
 	}
+	else if (tempweight >= 3000000 && tempweight < 5000000) {
+		weight = 0.50 * max;
+	}
+	else if (tempweight >= 2000000 && tempweight < 3000000) {
+		weight = 0.75 * max;
+	}
+	else if (tempweight >= 1000000 && tempweight < 2000000) {
+		weight = 0.90 * max;
+	}
+	else if (tempweight < 1000000) {
+		weight = max;
+	}
+
+	if (umur >= 65) {
+		weight = weight + ((umur / 100) * min);
+	}
+	/*if (weight < 0) {
+		weight =  weight * min;
+	}else if(weight > 0){
+		weight = weight * max;
+	}*/
+	/*if (weight > 1) {
+		weight = max;
+	}
+	else {
+		weight = weight * max;
+	}*/
 	return weight;
 }
 
@@ -477,12 +559,69 @@ float countValue(int nilai, int prestasi, int keaktifan) {
 	return value;
 }
 
+void DataDummy(Siswa a[]) {
+	a[0].setAll(1, "test1", 3004000, 180, 5000000, 40, 2000000, 87, 5, 5);
+	a[1].setAll(2, "test2", 12819549, 116, 14614849, 47, 1800000, 63, 7, 2);
+	a[2].setAll(3, "test3", 1000757, 121, 5992957, 78, 5000000, 33, 5, 3);
+	a[3].setAll(4, "test4", 7601546, 223, 10595046, 65, 3000000, 38, 12, 13);
+	a[4].setAll(5, "test5", 4876851, 103, 13372351, 45, 8500000, 70, 1, 1);
+	a[5].setAll(6, "test6", 103700, 122, 5100000, 37, 5000000, 81, 13, 14);
+	a[6].setAll(7, "test7", 10087563, 175, 11833163, 44, 1750000, 33, 1, 4);
+	a[7].setAll(8, "test8", 14397030, 226, 16894030, 30, 2500000, 61, 8, 15);
+	a[8].setAll(9, "test9", 4587183, 117, 9332483, 47, 4750000, 89, 15, 9);
+	a[9].setAll(10, "test10", 789676, 102, 2585476, 42, 1800000, 63, 15, 10);
+	a[10].setAll(11, "test11", 3134520, 220, 10927420, 71, 7800000, 91, 7, 14);
+	a[11].setAll(12, "test12", 104000, 246, 2600000, 40, 2500000, 84, 5, 1);
+	a[12].setAll(13, "test13", 3498204, 133, 6790672, 52, 3297668, 91, 6, 11);
+	a[13].setAll(14, "test14", 8979302, 124, 10139236, 64, 1166334, 34, 11, 15);
+	a[14].setAll(15, "test15", 562715, 125, 8502349, 62, 7945834, 85, 2, 5);
+	a[15].setAll(16, "test16", 4765914, 248, 10869425, 62, 6109711, 47, 13, 2);
+	a[16].setAll(17, "test17", 6777862, 92, 13448405, 70, 6677543, 54, 3, 5);
+	a[17].setAll(18, "test18", 1485654, 229, 2747672, 33, 1265318, 34, 13, 12);
+	a[18].setAll(19, "test19", 2393223, 226, 3506811, 30, 1116588, 40, 8, 13);
+	a[19].setAll(20, "test20", 515847, 163, 5218284, 31, 4705537, 55, 11, 1);
+	a[20].setAll(21, "test21", 663833, 236, 5322395, 60, 4664562, 68, 8, 15);
+	a[21].setAll(22, "test22", 2322244, 145, 4736288, 50, 2419044, 74, 13, 3);
+	a[22].setAll(23, "test23", 3478570, 99, 5047020, 45, 1572950, 94, 10, 11);
+	a[23].setAll(24, "test24", 5077862, 132, 16879148, 60, 11807286, 39, 2, 13);
+	a[24].setAll(25, "test25", 1450939, 240, 2757896, 54, 1312357, 77, 14, 5);
+	a[25].setAll(26, "test26", 6227821, 161, 12309496, 70, 6088675, 99, 6, 4);
+	a[26].setAll(27, "test27", 8698580, 189, 12659346, 67, 3967466, 59, 9, 5);
+	a[27].setAll(28, "test22", 317197, 250, 3168793, 50, 2856596, 79, 4, 4);
+	a[28].setAll(29, "test21", 5010715, 202, 10786276, 46, 5780161, 57, 14, 6);
+	a[29].setAll(30, "test22", 2522627, 180, 9651342, 51, 7133815, 56, 3, 2);
+	a[30].setAll(31, "test21", 5113238, 103, 8166270, 52, 3058232, 100, 2, 13);
+
+}
+
+void setWeightValue(Siswa a[], int min, int max) {
+	for (int i = 0; i < 31; i++) {
+		int weight = countWeight(a[i].getPenghasilan(), a[i].getTanggungan(), a[i].getUmur(), min, max);
+		int value = countValue(a[i].getNilai(), a[i].getPrestasi(), a[i].getKeaktifan());
+		a[i].setBerat(weight);
+		a[i].setValue(value);
+	}
+}
+
+listSiswa setListSiswaDummy(Siswa a[]) {
+	listSiswa arr;
+	for (int i = 0; i < 31; i++)
+	{
+		arr.addSiswa(a[i]);
+	}
+	return arr;
+}
 
 individual genetic_algorithm(listSiswa input) {
+	Siswa testdummy[31];
+	listSiswa pesogo;
+	DataDummy(testdummy);
+	setWeightValue(testdummy, input.getMin(), input.getMax());
+	pesogo = setListSiswaDummy(testdummy);
 	individual data[6];
 	for (int i = 0; i < 6; i++)
 	{
-		data[i].InitIndividual(input, input.getBudget());
+		data[i].InitIndividual(pesogo, input.getBudget());
 	}
 	population datapopulasi;
 	datapopulasi.setPopulation(data, 6);
@@ -490,7 +629,8 @@ individual genetic_algorithm(listSiswa input) {
 
 	population newpopulation;
 	individual x, y;
-	for (int i = 0; i < 10; i++)
+	//ini tadi ku ubah jadi 50 sebelumnya 10
+	for (int i = 0; i < 50; i++)
 	{
 		for (int i = 0; i < datapopulasi.getCountPopulation(); i++)
 		{
@@ -532,14 +672,14 @@ individual genetic_algorithm(listSiswa input) {
 			cout << endl;
 			if ((rand() % 100) < 5)
 			{
-				mutate(child1, input);
+				mutate(child1, pesogo);
 				cout << endl << "Child 1 After Mutate" << endl;
 				child1.display();
 				cout << endl;
 			}
 			if ((rand() % 100) < 5)
 			{
-				mutate(child2, input);
+				mutate(child2, pesogo);
 				cout << endl << "Child 2 After Mutate" << endl;
 				child2.display();
 				cout << endl;
@@ -587,7 +727,7 @@ void main() {
 		cout << "5. Process Data" << endl;
 		cout << "6. Show Result" << endl;
 		cout << "7. Input Data by Excel Format FIle" << endl;
-		cout << "8. Set Budget" << endl;
+		cout << "8. Set Budget, Minimum & Maximum" << endl;
 		cout << "0. Exit" << endl;
 		cout << "Input Choice : ";
 		cin >> choice;	cin.ignore();
@@ -595,15 +735,15 @@ void main() {
 			string nama;
 			int penghasilan, umur, tanggungan;
 			int nilai, prestasi, keaktifan;
-			int cosemster, avgscore,temp, temp_score = 0;
+			int cosemster, avgscore, temp, temp_score = 0;
 			cout << "Input Data : " << endl;
-			cout << "Name : "; getline(cin,nama);
+			cout << "Name : "; getline(cin, nama);
 			cout << "Monthly Income : "; cin >> penghasilan;
 			cout << "Parent Age (Father) : "; cin >> umur;
 			cout << "Monthly Outcome : "; cin >> tanggungan;
-			
+
 			cout << "What Semester Are you ? "; cin >> cosemster;
-			for(int i=0; i<cosemster; i++){
+			for (int i = 0; i < cosemster; i++) {
 				cout << "Semester " << i << "'s Average Score : "; cin >> temp;
 				temp_score += temp;
 			}
@@ -611,11 +751,12 @@ void main() {
 			nilai = avgscore;
 			cout << "Achievement : "; cin >> prestasi;
 			cout << "Contribution : "; cin >> keaktifan;
-			int berat = countWeight(penghasilan, tanggungan, umur);
+			int berat = countWeight(penghasilan, tanggungan, umur, arr.getMin(), arr.getMax());
 			int value = countValue(nilai, prestasi, keaktifan);
 			data.setAll(counterdata, nama, berat, value, penghasilan, umur, tanggungan, nilai, prestasi, keaktifan);
 			arr.addSiswa(data);
 			counterdata++;
+			cout << "Siswa Added" << endl;
 			_getch();
 		}
 		else if (choice == 2) {
@@ -645,11 +786,12 @@ void main() {
 			nilai = avgscore;
 			cout << "Achievement : "; cin >> prestasi;
 			cout << "Contribution : "; cin >> keaktifan;
-			int berat = countWeight(penghasilan, tanggungan, umur);
+			int berat = countWeight(penghasilan, tanggungan, umur, arr.getMin(), arr.getMax());
 			int value = countValue(nilai, prestasi, keaktifan);
 			Siswa tempSiswa;
 			tempSiswa.setAll(counterdata, nama, berat, value, penghasilan, umur, tanggungan, nilai, prestasi, keaktifan);
 			arr.editSiswa(index, tempSiswa);
+			cout << "Siswa Edited" << endl;
 			_getch();
 		}
 		else if (choice == 3) {
@@ -657,6 +799,7 @@ void main() {
 			cout << "Input Index yang ingin di hapus: ";
 			cin >> index;
 			arr.deleteSiswa(index);
+			cout << "Siswa Deleted" << endl;
 			_getch();
 		}
 		else if (choice == 4) {
@@ -674,14 +817,24 @@ void main() {
 			cout << "Total Value : " << result.getValue() << endl;
 		}
 		//else if (choice == 7) {
-
+		//	ifstream file;
+		//	string name;
+		//	getline(cin, name);
+		//	name += ".csv";
+		//	file.open(name);
 		//}
 		else if (choice == 8) {
-
+			int _budget, _min, _max;
+			cout << "Budget : ";
+			cin >> _budget;
+			cout << "Min    : ";
+			cin >> _min;
+			cout << "Max    : ";
+			cin >> _max;
+			arr.setBudget(_budget);
+			arr.setMin(_min);
+			arr.setMax(_max);
 		}
 		system("pause");
 	} while (choice != 0);
-
-
-
 }
