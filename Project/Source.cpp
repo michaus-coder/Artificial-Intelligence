@@ -4,6 +4,8 @@
 #include<string>
 #include<conio.h>
 #include<fstream>
+#include<sstream>
+#include<vector>
 using namespace std;
 
 class Siswa {
@@ -231,17 +233,6 @@ public:
 		item = tmp;
 		count++;
 	}
-	//void popGen(){
-	//	Siswa* tmp = new Siswa[count - 1];
-	//	for(int i = 0; i < count; i++){
-	//		if(i != (count - 1)){
-	//			tmp[i] = item[i];
-	//		}
-	//	}
-	//	delete[]item;
-	//	item = tmp;
-	//	count--;
-	//}
 	void InitIndividual(listSiswa a, int budget) {
 		int tmpweight = 0;
 		int tmpcount = 0;
@@ -267,37 +258,10 @@ public:
 			tmpweight = tmpweight + copy.getWeightByIndex(random);
 			copy.deleteSiswa(random);
 			tmpcount++;
-			/*do {
-				random = rand() % a.getCount();
-				check = true;
-				if (tmpcount != 0) {
-					for (int i = 0; i < tmpcount; i++)
-					{
-						if (random == arr[i]) {
-							check = false;
-							break;
-						}
-					}
-				}
-				else {
-					break;
-				}
-			} while (check);
-			if ((tmpweight +  a.getWeightByIndex(random)) >= budget) {
-				break;
-			}
-			else {
-				arr[tmpcount] = random;
-				tmpcount++;
-				tmpweight = tmpweight + a.getWeightByIndex(random);
-			}*/
+			
 
 		}
-		/*item = new Siswa[tmpcount];
-		for (int i = 0; i < tmpcount; i++)
-		{
-			item[i] = a.getSiswaByIndex(arr[i]);
-		}*/
+		
 		count = tmpcount;
 		totalberat = tmpweight;
 		totalvalue = getFitnessIndividual();
@@ -352,7 +316,7 @@ public:
 			cout << "Average Score       : " << item[i].getNilai() << endl;
 			cout << "Achievement         : " << item[i].getPrestasi() << endl;
 			cout << "Contribution        : " << item[i].getKeaktifan() << endl;
-			int beasiswa = item[i].getBerat(); //dipaskan perhitungannya
+			int beasiswa = item[i].getBerat(); 
 			cout << "Beasiswa            : " << beasiswa << endl;
 			cout << "====================================================================" << endl;
 			cout << endl;
@@ -539,17 +503,7 @@ float countWeight(int penghasilan, int tanggungan, int umur, int min, int max) {
 	if (umur >= 65) {
 		weight = weight + ((umur / 100) * min);
 	}
-	/*if (weight < 0) {
-		weight =  weight * min;
-	}else if(weight > 0){
-		weight = weight * max;
-	}*/
-	/*if (weight > 1) {
-		weight = max;
-	}
-	else {
-		weight = weight * max;
-	}*/
+	
 	return weight;
 }
 
@@ -559,69 +513,13 @@ float countValue(int nilai, int prestasi, int keaktifan) {
 	return value;
 }
 
-void DataDummy(Siswa a[]) {
-	a[0].setAll(1, "test1", 3004000, 180, 5000000, 40, 2000000, 87, 5, 5);
-	a[1].setAll(2, "test2", 12819549, 116, 14614849, 47, 1800000, 63, 7, 2);
-	a[2].setAll(3, "test3", 1000757, 121, 5992957, 78, 5000000, 33, 5, 3);
-	a[3].setAll(4, "test4", 7601546, 223, 10595046, 65, 3000000, 38, 12, 13);
-	a[4].setAll(5, "test5", 4876851, 103, 13372351, 45, 8500000, 70, 1, 1);
-	a[5].setAll(6, "test6", 103700, 122, 5100000, 37, 5000000, 81, 13, 14);
-	a[6].setAll(7, "test7", 10087563, 175, 11833163, 44, 1750000, 33, 1, 4);
-	a[7].setAll(8, "test8", 14397030, 226, 16894030, 30, 2500000, 61, 8, 15);
-	a[8].setAll(9, "test9", 4587183, 117, 9332483, 47, 4750000, 89, 15, 9);
-	a[9].setAll(10, "test10", 789676, 102, 2585476, 42, 1800000, 63, 15, 10);
-	a[10].setAll(11, "test11", 3134520, 220, 10927420, 71, 7800000, 91, 7, 14);
-	a[11].setAll(12, "test12", 104000, 246, 2600000, 40, 2500000, 84, 5, 1);
-	a[12].setAll(13, "test13", 3498204, 133, 6790672, 52, 3297668, 91, 6, 11);
-	a[13].setAll(14, "test14", 8979302, 124, 10139236, 64, 1166334, 34, 11, 15);
-	a[14].setAll(15, "test15", 562715, 125, 8502349, 62, 7945834, 85, 2, 5);
-	a[15].setAll(16, "test16", 4765914, 248, 10869425, 62, 6109711, 47, 13, 2);
-	a[16].setAll(17, "test17", 6777862, 92, 13448405, 70, 6677543, 54, 3, 5);
-	a[17].setAll(18, "test18", 1485654, 229, 2747672, 33, 1265318, 34, 13, 12);
-	a[18].setAll(19, "test19", 2393223, 226, 3506811, 30, 1116588, 40, 8, 13);
-	a[19].setAll(20, "test20", 515847, 163, 5218284, 31, 4705537, 55, 11, 1);
-	a[20].setAll(21, "test21", 663833, 236, 5322395, 60, 4664562, 68, 8, 15);
-	a[21].setAll(22, "test22", 2322244, 145, 4736288, 50, 2419044, 74, 13, 3);
-	a[22].setAll(23, "test23", 3478570, 99, 5047020, 45, 1572950, 94, 10, 11);
-	a[23].setAll(24, "test24", 5077862, 132, 16879148, 60, 11807286, 39, 2, 13);
-	a[24].setAll(25, "test25", 1450939, 240, 2757896, 54, 1312357, 77, 14, 5);
-	a[25].setAll(26, "test26", 6227821, 161, 12309496, 70, 6088675, 99, 6, 4);
-	a[26].setAll(27, "test27", 8698580, 189, 12659346, 67, 3967466, 59, 9, 5);
-	a[27].setAll(28, "test22", 317197, 250, 3168793, 50, 2856596, 79, 4, 4);
-	a[28].setAll(29, "test21", 5010715, 202, 10786276, 46, 5780161, 57, 14, 6);
-	a[29].setAll(30, "test22", 2522627, 180, 9651342, 51, 7133815, 56, 3, 2);
-	a[30].setAll(31, "test21", 5113238, 103, 8166270, 52, 3058232, 100, 2, 13);
 
-}
-
-void setWeightValue(Siswa a[], int min, int max) {
-	for (int i = 0; i < 31; i++) {
-		int weight = countWeight(a[i].getPenghasilan(), a[i].getTanggungan(), a[i].getUmur(), min, max);
-		int value = countValue(a[i].getNilai(), a[i].getPrestasi(), a[i].getKeaktifan());
-		a[i].setBerat(weight);
-		a[i].setValue(value);
-	}
-}
-
-listSiswa setListSiswaDummy(Siswa a[]) {
-	listSiswa arr;
-	for (int i = 0; i < 31; i++)
-	{
-		arr.addSiswa(a[i]);
-	}
-	return arr;
-}
 
 individual genetic_algorithm(listSiswa input) {
-	Siswa testdummy[31];
-	listSiswa pesogo;
-	DataDummy(testdummy);
-	setWeightValue(testdummy, input.getMin(), input.getMax());
-	pesogo = setListSiswaDummy(testdummy);
 	individual data[6];
 	for (int i = 0; i < 6; i++)
 	{
-		data[i].InitIndividual(pesogo, input.getBudget());
+		data[i].InitIndividual(input, input.getBudget());
 	}
 	population datapopulasi;
 	datapopulasi.setPopulation(data, 6);
@@ -629,7 +527,7 @@ individual genetic_algorithm(listSiswa input) {
 
 	population newpopulation;
 	individual x, y;
-	//ini tadi ku ubah jadi 50 sebelumnya 10
+	
 	for (int i = 0; i < 50; i++)
 	{
 		for (int i = 0; i < datapopulasi.getCountPopulation(); i++)
@@ -672,14 +570,14 @@ individual genetic_algorithm(listSiswa input) {
 			cout << endl;
 			if ((rand() % 100) < 5)
 			{
-				mutate(child1, pesogo);
+				mutate(child1, input);
 				cout << endl << "Child 1 After Mutate" << endl;
 				child1.display();
 				cout << endl;
 			}
 			if ((rand() % 100) < 5)
 			{
-				mutate(child2, pesogo);
+				mutate(child2, input);
 				cout << endl << "Child 2 After Mutate" << endl;
 				child2.display();
 				cout << endl;
@@ -700,18 +598,13 @@ individual genetic_algorithm(listSiswa input) {
 	}
 	bubble_sort(datapopulasi);
 	individual a = datapopulasi.getDataByIndex(0);
-	/*cout << "Data Terbaik : ";
-	a.display();
-	cout << endl;
-	cout << "Total Weight : " << a.getTotalBerat() << endl;
-	cout << "Total Value : " << a.getValue();
-	cout << endl;
-	cout << "List Barang Bawaan : " << endl;*/
+	
 	return a;
 }
 
 void main() {
 	srand(time(NULL));
+	ifstream inFile;
 	Siswa data;
 	listSiswa arr;
 	individual result;
@@ -726,7 +619,7 @@ void main() {
 		cout << "4. Show Data" << endl;
 		cout << "5. Process Data" << endl;
 		cout << "6. Show Result" << endl;
-		cout << "7. Input Data by Excel Format FIle" << endl;
+		cout << "7. Input Data by Excel Format File" << endl;
 		cout << "8. Set Budget, Minimum & Maximum" << endl;
 		cout << "0. Exit" << endl;
 		cout << "Input Choice : ";
@@ -757,7 +650,7 @@ void main() {
 			arr.addSiswa(data);
 			counterdata++;
 			cout << "Siswa Added" << endl;
-			_getch();
+			system("pause");
 		}
 		else if (choice == 2) {
 			int index;
@@ -775,7 +668,6 @@ void main() {
 			cout << "Monthly Income : "; cin >> penghasilan;
 			cout << "Parent Age (Father) : "; cin >> umur;
 			cout << "Monthly Outcome : "; cin >> tanggungan;
-
 			cout << "What Semester Are you ? "; cin >> cosemster;
 			for (int i = 0; i < cosemster; i++) {
 				int tempco = i + 1;
@@ -792,7 +684,7 @@ void main() {
 			tempSiswa.setAll(counterdata, nama, berat, value, penghasilan, umur, tanggungan, nilai, prestasi, keaktifan);
 			arr.editSiswa(index, tempSiswa);
 			cout << "Siswa Edited" << endl;
-			_getch();
+			system("pause");
 		}
 		else if (choice == 3) {
 			int index;
@@ -800,14 +692,18 @@ void main() {
 			cin >> index;
 			arr.deleteSiswa(index);
 			cout << "Siswa Deleted" << endl;
-			_getch();
+			system("pause");
 		}
 		else if (choice == 4) {
 			cout << "List Siswa" << endl;
 			arr.showSiswa();
+			system("pause");
+
 		}
 		else if (choice == 5) {
 			result = genetic_algorithm(arr);
+			system("pause");
+
 		}
 		else if (choice == 6) {
 			cout << "Scholarship Achiever List" << endl;
@@ -815,14 +711,46 @@ void main() {
 
 			cout << "Total Weight : " << result.getTotalBerat() << endl;
 			cout << "Total Value : " << result.getValue() << endl;
+			system("pause");
+
 		}
-		//else if (choice == 7) {
-		//	ifstream file;
-		//	string name;
-		//	getline(cin, name);
-		//	name += ".csv";
-		//	file.open(name);
-		//}
+		else if (choice == 7) {
+			fstream fin;
+			fin.open("dummy_data.csv", ios::in);
+			int rollnum, roll2, count = 0;
+			vector<string> row;
+			string line, word, temp;
+			while (fin >> line) {
+
+				row.clear();
+				stringstream s(line);
+				while (getline(s, word, ',')) {
+					row.push_back(word);
+				}
+				
+				int counter = stoi(row[0]);
+				string nama = row[1];
+				int penghasilan = stoi(row[2]);
+				int umur = stoi(row[3]);
+				int tanggungan = stoi(row[4]);
+				int nilai = stoi(row[5]);
+				int prestasi = stoi(row[6]);
+				int keaktifan = stoi(row[7]);
+				cout << "Counter: " << counter << "\n";
+				cout << "Nama: " << nama << "\n";
+				cout << "Penghasilan: " << penghasilan << "\n";
+				cout << "Umur: " << umur << "\n";
+				cout << "Tanggungan: " << tanggungan << "\n";
+				cout << "Nilai: " << nilai << "\n";
+				cout << "Prestasi: " << prestasi << "\n";
+				cout << "Keaktifan: " << keaktifan << "\n";
+				int berat = countWeight(penghasilan, tanggungan, umur, arr.getMin(), arr.getMax());
+				int value = countValue(nilai, prestasi, keaktifan);
+				data.setAll(stoi(row[0]), nama, berat, value, penghasilan, umur,tanggungan, nilai, prestasi, keaktifan);
+				arr.addSiswa(data);
+			}
+			system("pause");
+		}
 		else if (choice == 8) {
 			int _budget, _min, _max;
 			cout << "Budget : ";
@@ -834,7 +762,8 @@ void main() {
 			arr.setBudget(_budget);
 			arr.setMin(_min);
 			arr.setMax(_max);
+			system("pause");
+
 		}
-		system("pause");
 	} while (choice != 0);
 }
